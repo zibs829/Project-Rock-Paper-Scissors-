@@ -50,11 +50,6 @@ function playRound () {
 
 let playRounds = 0
 function game() {
-    while(playRounds < 5) {
-        playRound()
-        playRounds++
-
-    }
     if (playerScore == computerScore) {
         return console.log("It's a tie!! " + "Your score: " + playerScore + " Computer score: "+ computerScore)
     } else if (playerScore > computerScore) {
@@ -63,6 +58,8 @@ function game() {
         return console.log("You lose! " + "Your score: " + playerScore + " Computer score: "+ computerScore)
     }
 } 
+
+document.querySelector("button").addEventListener("click")
 
 game()
 
