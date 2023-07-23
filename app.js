@@ -1,4 +1,3 @@
-
 let playerScore = 0
 let computerScore = 0
 
@@ -14,53 +13,90 @@ function getComputerChoice () {
 }
 
 
-function getPlayerChoice() {
-    let playerchoice = window.prompt("Choose Rock, Paper, or Scissors", );
-    playerSelection = playerchoice.toLowerCase();
-    if (
-        (playerSelection == "rock") ||
-        (playerSelection == "paper") ||
-        (playerSelection == "scissors")
-    ) {
-        return playerSelection
-    } else { 
-        return window.prompt("Oops! That is not an option choose Rock, Paper, or Scissors." )
-    }
-}
-
-function playRound () {
-    playerSelection = getPlayerChoice();
+let rounds = 0
+function playRound (userChoice) {
+    playerSelection = userChoice;
+    console.log(playerSelection);
     computerSelection = getComputerChoice().toLowerCase();
+    console.log(computerSelection)
     if (playerSelection == computerSelection) {
+        rounds += 1
         return
     } else if (
         (playerSelection == "rock" && computerSelection == "paper") ||
         (playerSelection == "paper" && computerSelection == "scissors") ||
         (playerSelection == "scissors" && computerSelection == "rock") 
     ) {
-        computerScore += 1 
+        rounds += 1
+        const score = computerScore += 1 
+        scoreToDom(score);
     } else if ( 
         (playerSelection == "rock" && computerSelection == "scissors") ||
         (playerSelection == "paper" && computerSelection == "rock") ||
         (playerSelection == "scissors" && computerSelection == "paper") 
     ){
-        playerScore += 1
+        rounds += 1
+        const score = playerScore += 1
+        scoreToDom(score);
     }
 } 
 
-let playRounds = 0
+
+
+function scoreToDom() {
+    const runningScoreContainer = document.getElementById('runningScoreContainer');
+    const scoreMessage = document.createElement('p');
+    scoreMessage.textContent = "Your score: " + playerScore + "Computer score: " + computerScore;
+    runningScoreContainer.appendChild(scoreMessage);
+}
+
 function game() {
+    //compare scores with conditional statments to determine winner
     if (playerScore == computerScore) {
-        return console.log("It's a tie!! " + "Your score: " + playerScore + " Computer score: "+ computerScore)
+        const message = "It's a tie!! " + "Your score: " + playerScore + " Computer score: "+ computerScore
+        resultsToDom(message);
     } else if (playerScore > computerScore) {
-        return console.log("You win! " + "Your score: " + playerScore + " Computer score: "+ computerScore)
+        const message = "You win!! " + "Your score: " + playerScore + " Computer score: "+ computerScore
+        resultsToDom(message);
     } else {
-        return console.log("You lose! " + "Your score: " + playerScore + " Computer score: "+ computerScore)
+        const message = "Computer wins!! " + "Your score: " + playerScore + " Computer score: "+ computerScore
+        resultsToDom(message);
     }
-} 
+}
 
-document.querySelector("button").addEventListener("click")
+function resultsToDom(message) {
+    const resultsContainer = document.getElementById('resultsContainer');
+    const resultsMessage = document.createElement('p');
+    resultsMessage.textContent = message;
+    resultsContainer.appendChild(resultsMessage);
+}
 
-game()
+
+
+
+//Event listeners for buttons
+const buttons = document.querySelectorAll('.choicesContainer button');
+
+//Function to handle button click
+const buttonGroupPressed = (e) => {
+    const button = e.target;
+    const userChoice = button.id;
+    playRound(userChoice);
+}
+//iterate through node list and attach listener for each button 
+buttons.forEach(button => {
+    button.addEventListener('click', buttonGroupPressed);
+});
+
+
+
+/*function handleButtonClick(event) { 
+    const button = event.target;
+    const userChoice = document.getElementById("button").value;
+     //Call playRound function with user choice
+     playRound(userChoice);
+}
+*/
+
 
 
