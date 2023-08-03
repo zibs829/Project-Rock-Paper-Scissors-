@@ -16,12 +16,11 @@ function getComputerChoice () {
 let rounds = 0
 function playRound (userChoice) {
     playerSelection = userChoice;
-    console.log(playerSelection);
     computerSelection = getComputerChoice().toLowerCase();
-    console.log(computerSelection)
     if (playerSelection == computerSelection) {
         rounds += 1
-        return
+        score = 0 
+        scoreToDom(score);
     } else if (
         (playerSelection == "rock" && computerSelection == "paper") ||
         (playerSelection == "paper" && computerSelection == "scissors") ||
@@ -29,6 +28,7 @@ function playRound (userChoice) {
     ) {
         rounds += 1
         const score = computerScore += 1 
+        
         scoreToDom(score);
     } else if ( 
         (playerSelection == "rock" && computerSelection == "scissors") ||
@@ -41,8 +41,6 @@ function playRound (userChoice) {
     }
 } 
 
-
-
 function scoreToDom() {
     const runningScoreContainer = document.getElementById('runningScoreContainer');
     const scoreMessage = document.createElement('p');
@@ -50,7 +48,7 @@ function scoreToDom() {
     runningScoreContainer.appendChild(scoreMessage);
 }
 
-function game() {
+function gameResults() {
     //compare scores with conditional statments to determine winner
     if (playerScore == computerScore) {
         const message = "It's a tie!! " + "Your score: " + playerScore + " Computer score: "+ computerScore
@@ -72,31 +70,53 @@ function resultsToDom(message) {
 }
 
 
+//In the game function 
+function game(userChoice, count) {
 
+    //if count of clicks is less than 5 then input user choice into playRound()
+    if (count < 5) {
+        playRound(userChoice);
+    } 
+    //if clickcount is equal to 5 then call gameResults() 
+    else if (count = 5) {
+        playRound(userChoice);
+        gameResults();
+    }
+    /*else {
+        const response = confirm("Would you like to play again?")
+        if (response == True) {
+            //delete data and restart game 
+        } else {
+            return; 
+        } 
+    } */
+}
 
+let startCount = 0; 
+function handleButtonClick() {
 //Event listeners for buttons
 const buttons = document.querySelectorAll('.choicesContainer button');
-
 //Function to handle button click
 const buttonGroupPressed = (e) => {
+    //increment count by one every time button is clicked
+    let count = ++startCount; 
+    console.log(count);
     const button = e.target;
     const userChoice = button.id;
-    playRound(userChoice);
+    //call the game function to start the game with userchoice
+    game(userChoice, count);
 }
 //iterate through node list and attach listener for each button 
 buttons.forEach(button => {
     button.addEventListener('click', buttonGroupPressed);
 });
-
-
-
-/*function handleButtonClick(event) { 
-    const button = event.target;
-    const userChoice = document.getElementById("button").value;
-     //Call playRound function with user choice
-     playRound(userChoice);
 }
-*/
+
+handleButtonClick();
+
+
+
+//If user clicks on the button again,  restart game, delete data stored in resultsContainer and running Score container 
 
 
 
